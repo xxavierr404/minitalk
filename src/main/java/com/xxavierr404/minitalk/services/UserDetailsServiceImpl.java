@@ -33,6 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         user.setSurname(dto.getSurname());
         user.setEmail(dto.getEmail());
         user.setPassword(encoder.encode(dto.getPassword()));
+        user.setBirthdate(dto.getBirthdate());
+        user.setCity(dto.getCity());
+        user.setUniversity(dto.getUniversity());
 
         try {
             loadUserByUsername(dto.getEmail());
