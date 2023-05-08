@@ -1,5 +1,6 @@
 package com.xxavierr404.minitalk.dto;
 
+import com.xxavierr404.minitalk.model.Photo;
 import com.xxavierr404.minitalk.model.User;
 import lombok.Getter;
 
@@ -15,6 +16,7 @@ public class UserDTO {
     private final LocalDate birthdate;
     private final String city;
     private final String university;
+    private final Photo avatar;
 
     public UserDTO(User user) {
         this.id = user.getId();
@@ -24,5 +26,6 @@ public class UserDTO {
         this.birthdate = user.getBirthdate();
         this.city = user.getCity();
         this.university = user.getUniversity();
+        this.avatar = user.getAvatar();
     }
 }

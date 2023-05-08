@@ -26,4 +26,6 @@ public class User {
     private String university;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> friends;
+    @OneToOne
+    private Photo avatar;
 }

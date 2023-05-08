@@ -7,6 +7,7 @@ import com.xxavierr404.minitalk.exceptions.EmailTakenException;
 import com.xxavierr404.minitalk.security.JwtUtil;
 import com.xxavierr404.minitalk.services.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,6 +30,11 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(jwtUtil.generateToken(UserCredentialsDTO.fromRegisterDTO(dto)));
+    }
+
+    @PostMapping("/login")
+    private ResponseEntity<String> login(UserCredentialsDTO dto) {
+        return ResponseEntity.ok(jwtUtil.generateToken(dto));
     }
 
     @GetMapping("/test")

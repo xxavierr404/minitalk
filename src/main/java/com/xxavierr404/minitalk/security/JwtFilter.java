@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -22,6 +23,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtUtil jwtUtil;
+    private final PasswordEncoder encoder;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -40,6 +42,16 @@ public class JwtFilter extends OncePerRequestFilter {
                 try {
                     var userCredentialsDTO = jwtUtil.validateTokenAndRetrieveSubject(jwt);
                     var userDetails = userDetailsService.loadUserByUsername(userCredentialsDTO.getEmail());
+
+                    System.out.println(userCredentialsDTO.getPassword());
+                    System.out.println(encoder.encode(userCredentialsDTO.getPassword()));
+                    System.out.println(userDetails.getPassword());
+                    System.out.println(encoder.matches(userCredentialsDTO.getPassword(), userDetails.getPassword()));
+
+                    if (!encoder.matches(userCredentialsDTO.getPassword(), userDetails.getPassword())) {
+                        throw new JWTVerificationException("Invalid password");
+                    }
+
                     var authToken = new UsernamePasswordAuthenticationToken(
                             new UserDTO(((UserDetailsImpl) userDetails).getUser()),
                             userCredentialsDTO,
@@ -51,6 +63,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     }
                 } catch (JWTVerificationException e) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
+                    return;
                 }
             }
         }
