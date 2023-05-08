@@ -1,11 +1,13 @@
 package com.xxavierr404.minitalk.services;
 
+import com.xxavierr404.minitalk.dto.UserDTO;
 import com.xxavierr404.minitalk.dto.UserRegisterDTO;
 import com.xxavierr404.minitalk.exceptions.EmailTakenException;
 import com.xxavierr404.minitalk.model.User;
 import com.xxavierr404.minitalk.repositories.UserRepository;
 import com.xxavierr404.minitalk.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -45,5 +47,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         throw new EmailTakenException("Email already taken");
+    }
+
+    public boolean checkUser() {
+        var user = userRepository.findById(
+                ((UserDTO) SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getPrincipal())
+                        .getId());
+        return user.isPresent();
     }
 }

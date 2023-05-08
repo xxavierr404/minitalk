@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -35,5 +36,10 @@ public class AuthController {
     @PostMapping("/login")
     private ResponseEntity<String> login(UserCredentialsDTO dto) {
         return ResponseEntity.ok(jwtUtil.generateToken(dto));
+    }
+
+    @GetMapping("/checkToken")
+    private ResponseEntity<Boolean> checkToken() {
+        return ResponseEntity.ok(userDetailsService.checkUser());
     }
 }
