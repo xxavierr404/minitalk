@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -19,4 +20,14 @@ public class Post {
     @ManyToOne
     private User author;
     private LocalDateTime postTime;
+    @ManyToMany
+    private List<User> likes;
+
+    public void addLike(User user) {
+        likes.add(user);
+    }
+
+    public void removeLike(User user) {
+        likes.remove(user);
+    }
 }

@@ -16,7 +16,7 @@ class ImageController {
 
     @PostMapping
     private Long uploadImage(@RequestParam MultipartFile image) throws Exception {
-        return fileLocationService.save(image.getBytes());
+        return fileLocationService.save(image.getBytes()).getId();
     }
 
     @GetMapping(value = "/{imageId}", produces = MediaType.IMAGE_JPEG_VALUE)

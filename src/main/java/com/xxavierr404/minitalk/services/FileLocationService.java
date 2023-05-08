@@ -20,13 +20,12 @@ class FileLocationService {
     private final FileSystemRepository fileSystemRepository;
     private final ImageLocationRepository imageDbRepository;
 
-    public Long save(byte[] bytes) throws Exception {
+    public ImageLocation save(byte[] bytes) throws Exception {
         String location = fileSystemRepository.save(bytes);
         var imageLoc = new ImageLocation();
         imageLoc.setLink(location);
         return imageDbRepository
-                .save(imageLoc)
-                .getId();
+                .save(imageLoc);
     }
 
     public FileSystemResource find(Long imageId) {
