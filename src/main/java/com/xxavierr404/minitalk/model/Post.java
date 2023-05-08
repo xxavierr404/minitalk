@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -13,7 +15,8 @@ public class Post {
     private Long id;
     private String text;
     @ManyToOne(fetch = FetchType.EAGER)
-    private Photo attachment;
+    private ImageLocation attachment;
     @ManyToOne
     private User author;
+    private LocalDateTime postTime;
 }

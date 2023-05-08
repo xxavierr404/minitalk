@@ -43,11 +43,6 @@ public class JwtFilter extends OncePerRequestFilter {
                     var userCredentialsDTO = jwtUtil.validateTokenAndRetrieveSubject(jwt);
                     var userDetails = userDetailsService.loadUserByUsername(userCredentialsDTO.getEmail());
 
-                    System.out.println(userCredentialsDTO.getPassword());
-                    System.out.println(encoder.encode(userCredentialsDTO.getPassword()));
-                    System.out.println(userDetails.getPassword());
-                    System.out.println(encoder.matches(userCredentialsDTO.getPassword(), userDetails.getPassword()));
-
                     if (!encoder.matches(userCredentialsDTO.getPassword(), userDetails.getPassword())) {
                         throw new JWTVerificationException("Invalid password");
                     }
@@ -61,13 +56,12 @@ public class JwtFilter extends OncePerRequestFilter {
                     if (SecurityContextHolder.getContext().getAuthentication() == null) {
                         SecurityContextHolder.getContext().setAuthentication(authToken);
                     }
+
+                    filterChain.doFilter(request, response);
                 } catch (JWTVerificationException e) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid JWT Token");
-                    return;
                 }
             }
         }
-
-        filterChain.doFilter(request, response);
     }
 }

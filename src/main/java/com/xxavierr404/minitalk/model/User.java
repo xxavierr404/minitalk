@@ -27,5 +27,12 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private List<User> friends;
     @OneToOne
-    private Photo avatar;
+    private ImageLocation avatar;
+
+    public void addFriend(User user) {
+        friends.add(user);
+    }
+    public void removeFriend(User user) {
+        friends.remove(user);
+    }
 }

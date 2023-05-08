@@ -36,12 +36,4 @@ public class AuthController {
     private ResponseEntity<String> login(UserCredentialsDTO dto) {
         return ResponseEntity.ok(jwtUtil.generateToken(dto));
     }
-
-    @GetMapping("/test")
-    public UserDTO getCurrentUserInfo() {
-        return ((UserDTO) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal());
-    }
 }
