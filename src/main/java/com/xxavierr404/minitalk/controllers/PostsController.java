@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/posts")
+@CrossOrigin
 public class PostsController {
     private final PostService postService;
     private final FileLocationService fileLocationService;

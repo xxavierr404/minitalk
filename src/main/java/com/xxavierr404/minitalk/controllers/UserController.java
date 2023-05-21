@@ -1,5 +1,6 @@
 package com.xxavierr404.minitalk.controllers;
 
+import com.xxavierr404.minitalk.dto.PostDTO;
 import com.xxavierr404.minitalk.dto.UserDTO;
 import com.xxavierr404.minitalk.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@CrossOrigin
 public class UserController {
     private final UserService userService;
 
@@ -31,6 +33,11 @@ public class UserController {
     @GetMapping("/{id}")
     private UserDTO getUserInfo(@PathVariable Long id) {
         return userService.getUser(id);
+    }
+
+    @GetMapping("/{id}/posts")
+    private List<PostDTO> getPosts(@PathVariable Long id) {
+        return userService.getPostsFromUser(id);
     }
 
     @GetMapping("/findByName")

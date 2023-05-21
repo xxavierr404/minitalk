@@ -14,6 +14,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -49,13 +51,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         throw new EmailTakenException("Email already taken");
     }
 
-    public boolean checkUser() {
-        var user = userRepository.findById(
+    public Optional<User> getUser() {
+        return userRepository.findById(
                 ((UserDTO) SecurityContextHolder
                         .getContext()
                         .getAuthentication()
                         .getPrincipal())
                         .getId());
-        return user.isPresent();
     }
 }

@@ -1,8 +1,10 @@
 package com.xxavierr404.minitalk.services;
 
+import com.xxavierr404.minitalk.dto.PostDTO;
 import com.xxavierr404.minitalk.dto.UserDTO;
 import com.xxavierr404.minitalk.model.User;
 import com.xxavierr404.minitalk.repositories.ImageLocationRepository;
+import com.xxavierr404.minitalk.repositories.PostRepository;
 import com.xxavierr404.minitalk.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final PostRepository postRepository;
     private final ImageLocationRepository imageLocationRepository;
 
     public void addFriend(Long id) {
@@ -67,5 +70,14 @@ public class UserService {
         result.addAll(userRepository.getAllByNameContainingIgnoreCase(name));
         result.addAll(userRepository.getAllBySurnameContainingIgnoreCase(name));
         return result.stream().map((e) -> new UserDTO((User) e)).collect(Collectors.toList());
+    }
+
+    public List<PostDTO> getPostsFromUser(Long id) {
+        return postRepository
+                .findAllByAuthorOrderByPostTimeDesc
+                        (userRepository.findById(id).get())
+                .stream()
+                .map(PostDTO::new)
+                .collect(Collectors.toList());
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -20,10 +21,12 @@ public class SecurityConfig {
     @Bean
     private SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
+                .cors()
+                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/test")
+                .requestMatchers("/posts/**")
                 .authenticated()
                 .requestMatchers("/images/**")
                 .authenticated()
